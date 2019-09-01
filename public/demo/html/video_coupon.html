@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>视频券</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/libs/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../css/libs/swiper_min.css">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <script src="../js/libs/axios.js"></script>
+    <script src="../js/utils.js" charset="utf-8"></script>
+    <script src="../js/http.js"></script>
+    <script src="../js/libs/swiper_min.js?201906051207" charset="utf-8"></script>
+    <script src="../js/libs/vue_awesome_swiper.js" charset="utf-8"></script>
+    <script src="../js/libs/vue_min.js" charset="utf-8"></script>
+    <script src="../js/libs/qs.js" charset="utf-8"></script>
+    <style>
+        html, body, #vue-app {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+
+        #vue-app {
+            transition: opacity .3s;
+        }
+
+        #vue-app .mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            background: black;
+        }
+
+        .head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1.1rem;
+            font-size: .34rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .head i {
+            margin-left: .2rem;
+            position: relative;
+            z-index: 999;
+            font-size: .36rem;
+        }
+
+        .head span {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            line-height: 1.1rem;
+            text-align: center;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-container .swiper-slide {
+            display: flex;
+            align-items: center;
+        }
+
+        .swiper-container .swiper-slide video {
+            width: 100%;
+        }
+
+        .right-zhuan {
+            position: absolute;
+            right: 0;
+            top: 20%;
+            z-index: 997;
+            font-size: .26rem;
+            color: white;
+        }
+
+        .right-zhuan .zhuan-item {
+            background: rgba(0, 0, 0, 0.4);
+            height: .5rem;
+            border-radius: .5rem 0 0 .5rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: .2rem;
+            width: 1.54rem;
+        }
+
+        .right-zhuan .zhuan-item .icon {
+            width: .4rem;
+            height: .4rem;
+            line-height: .4rem;
+            text-align: center;
+            border-radius: .4rem;
+            margin-left: .06rem;
+        }
+
+        .right-box {
+            position: absolute;
+            right: .2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+            top: 53%;
+            color: white;
+        }
+
+        .animation1 {
+            animation: animation1 1s linear;
+            -webkit-animation: animation1 1s linear;
+        }
+
+        .right-box .right-item {
+            margin-bottom: .2rem;
+        }
+
+        .right-box .right-item:nth-child(2).collect i {
+            background-image: linear-gradient(-90deg, rgba(255, 69, 58, 1), rgba(255, 138, 113, 1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .right-box .right-item .shop-icon {
+            width: .8rem;
+            height: .8rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: .9rem;
+            border: .05rem #fff solid;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .right-box .right-item .shop-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .right-box .right-item i {
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: .6rem;
+            display: block;
+        }
+
+        .right-box .right-item .icon-shiliangzhinengduixiang4 {
+            transform: scaleX(-1)
+        }
+
+        .right-box .right-item p {
+            font-size: .22rem;
+            text-align: center;
+            margin-top: .1rem;
+        }
+
+        .bottom-box {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            color: white;
+            padding: 0 .44rem 0 .35rem;
+        }
+
+        .bottom-box > div {
+            margin: .1rem 0;
+        }
+
+        .bottom-box .shop-name {
+            font-size: .3rem;
+        }
+
+        .bottom-box .shop-name img {
+            height: .28rem;
+            margin-left: .12rem;
+        }
+
+        .bottom-box .shop-name span:last-child {
+            font-size: .22rem;
+            color: #FFB447;
+        }
+
+        .bottom-box .shop-title {
+            font-size: .22rem;
+        }
+
+        .bottom-box .coupon {
+            overflow: hidden;
+        }
+
+        .bottom-box .coupon .coupon-item:first-child {
+            background: url('../image/icon/coupon_bg1.png') no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .bottom-box .coupon .coupon-item:last-child {
+            background: url('../image/icon/coupon_bg2.png') no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .bottom-box .coupon .coupon-item {
+            float: right;
+            width: 1.47rem;
+            height: 0.42rem;
+            line-height: .42rem;
+            float: left;
+            margin-right: .2rem;
+            font-size: 0.2rem;
+            color: #fff;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+            border-radius: .03rem;
+        }
+
+        .bottom-box .desc {
+            font-size: .22rem;
+        }
+
+        .oauthBox {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+        }
+
+        .oauthBox .update {
+            width: 5.1rem;
+            overflow: hidden;
+            border-radius: 0.2rem;
+            position: relative;
+        }
+
+        .oauthBox .update .bg {
+            width: 100%;
+            float: left;
+        }
+
+        .oauthBox .update .contentBox {
+            width: 100%;
+            float: left;
+            background: #fff;
+            padding: 0 0.4rem 0.4rem;
+            box-sizing: border-box;
+        }
+
+        .oauthBox .update .add {
+            width: 100%;
+        }
+
+        .oauthBox .update .add .t {
+            font-size: 0.36rem;
+            color: #333333;
+        }
+
+        .oauthBox .update .add p {
+            text-align: center;
+            color: #666;
+        }
+
+        .oauthBox .update .add .info {
+            margin-top: 0.2rem;
+            font-size: 0.24rem;
+            color: #333333;
+            text-align: left;
+        }
+
+        .oauthBox .update .update_btn {
+            justify-content: space-around;
+            display: flex;
+            margin-top: 0.4rem;
+        }
+
+        .oauthBox .update .update_btn span {
+            display: inline-block;
+            width: 2rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            background: #E5E5E5;
+            line-height: 0.6rem;
+            font-size: 0.3rem;
+            color: #999;
+        }
+
+        .oauthBox .update .update_btn span:last-of-type {
+            color: #fff;
+            background: linear-gradient(to right, #D456FF, #7468FF);
+        }
+
+        .loading-box-1 {
+            position: absolute;
+            top: 50%;
+            left: calc(50% - 15px);
+            transition: opacity .3s;
+            z-index: 2;
+        }
+
+        .pause-box {
+            position: absolute;
+            left: 50%;
+            margin-left: -0.52rem;
+            z-index: 3;
+            top: 50%;
+        }
+
+        .pause-box img {
+            width: 1.04rem;
+        }
+
+        @keyframes animation1 {
+            0% {
+                right: 0rem;
+            }
+            20% {
+                right: -1.08rem;
+            }
+            80% {
+                right: -1.08rem;
+            }
+            100% {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="vue-app" v-cloak>
+    <div class="head" :style="{marginTop: safeArea.top+'px'}">
+        <span>抖券</span>
+    </div>
+    <div class="mask"></div>
+    <swiper :options="swiperOption" ref="mySwiper" v-if="goodsList.length>0">
+        <swiper-slide v-for="(item, index) in goodsList" :key="index" :data-index="index" :data-videoIndex="videoIndex">
+
+        </swiper-slide>
+    </swiper>
+    <div class="right-zhuan" v-if="goodsList[videoIndex]">
+        <div class="zhuan-item">
+            <div class="icon" style="background:linear-gradient(-90deg,rgba(255,69,58,1),rgba(255,138,113,1));">赚</div>
+            <span>￥{{goodsList[videoIndex].commission_money}}</span>
+        </div>
+        <div class="zhuan-item">
+            <div class="icon" style="background:linear-gradient(90deg,rgba(255,210,74,1),rgba(255,151,40,1));">省</div>
+            <span>￥{{goodsList[videoIndex].commission_money}}</span>
+        </div>
+    </div>
+    <div class="right-box" v-if="goodsList[videoIndex]">
+        <div class="right-item" tapmode>
+            <div class="shop-icon"><img :src="goodsList[videoIndex].thumb" alt=""></div>
+            <p>去购买</p>
+        </div>
+        <div class="right-item" :class="{'collect':goodsList[videoIndex].collectStatus==1}">
+            <div><i class="iconfont icon-likefill"></i></div>
+            <p>收藏</p>
+        </div>
+        <div class="right-item">
+            <div><i class="iconfont icon-shiliangzhinengduixiang4"></i></div>
+            <p>分享</p>
+        </div>
+    </div>
+    <div class="bottom-box" :style="{paddingBottom: safeArea.bottom+'px'}" v-if="goodsList[videoIndex]">
+        <div class="shop-name"><span>@{{goodsList[videoIndex].shop.title}}</span><img
+                src="../image/icon/mofabang.png"><span class="has-buy">{{goodsList[videoIndex].volume}}人已购</span></div>
+        <div class="shop-title text-overflow_1-xzh">{{goodsList[videoIndex].title}}</div>
+        <div class="coupon">
+            <div class="coupon-item">券后￥{{goodsList[videoIndex].coupon_price}}</div>
+            <div class="coupon-item">{{goodsList[videoIndex].coupon_money}}元券</div>
+        </div>
+        <div class="desc text-overflow_2-xzh">{{goodsList[videoIndex].description}}</div>
+    </div>
+
+    <div class="loading-box-1" :style="{opacity: showLoading?1:0}">
+        <div class="container google-animation-2">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+    <div class="pause-box" v-if='isStop' @click="changVideoStatus"><img src="../image/icon/pause.png"></div>
+</div>
+</body>
+
+<script type="text/javascript">
+    Vue.use(window.VueAwesomeSwiper)
+    var vueObj;
+    vueObj = new Vue({
+        el: '#vue-app',
+        data: {
+            firstOne: true, // 标记是否是进入页面后的第一个视频
+            safeArea: 44,
+            showToast1: false,
+            showLoading: true,
+            isStop: false,
+            videoIndex: 0,
+            swiperOption: {
+                direction: 'vertical',
+                loop: true,
+                on: {
+                    slideChangeTransitionStart: function () {
+                        document.getElementsByClassName('right-zhuan')[0].classList.add("animation1");
+                        setTimeout(function () {
+                            document.getElementsByClassName('right-zhuan')[0].classList.remove("animation1");
+                        }, 1000)
+                        vueObj.showLoading = true
+                        vueObj.isStop = false;
+                    },
+                    slideChangeTransitionEnd: function () {
+                        var swiperObj = this;
+                        document.querySelector('.mask').style.display = 'block';
+                        var realIndex = this.realIndex; // 真实下标
+                        var activeIndex = this.activeIndex; // 显示的dom元素下标
+                        var videoObj = document.getElementsByTagName('video')[0];
+                        if (!videoObj) {
+                            videoObj = document.createElement('video');
+                            videoObj.onclick = vueObj.changVideoStatus
+                            videoObj.setAttribute('playsinline', true)
+                            videoObj.setAttribute('webkit-playsinline', true)
+                            videoObj.setAttribute('x5-video-player-type', 'h5')
+                            videoObj.setAttribute('x5-video-player-fullscreen', true)
+                            videoObj.setAttribute('x-webkit-airplay', true)
+                            videoObj.autoplay = 'autoplay';
+                            videoObj.loop = 'loop';
+                            videoObj.oncanplay = function () {
+                                if (vueObj.firstOne) {
+                                    // 在有的浏览器中，刚进入页面的视频不能够自动播放
+                                    vueObj.firstOne = false;
+                                    vueObj.showLoading = false
+                                    document.querySelector('.mask').style.display = 'none';
+                                    vueObj.isStop = true;
+                                }
+                            }
+                            videoObj.onplaying = function () {
+                                vueObj.isStop = false;
+                                vueObj.showLoading = false
+                                document.querySelector('.mask').style.display = 'none';
+                                videoObj.play();
+                            };
+                            videoObj.onerror = function () {
+                                console.log('error')
+                                // 当视频不存在会导致 加载失败
+                                vueObj.goodsList.splice(swiperObj.realIndex, 1);  // 删除失效视频
+                                videoObj.src = vueObj.goodsList[swiperObj.realIndex].video_url;  // 重新加载新的视频地址
+                            };
+                        }
+                        document.getElementsByClassName('swiper-slide')[activeIndex].appendChild(videoObj);  // 给当前展示的slide添加video
+                        videoObj.src = vueObj.goodsList[this.realIndex].video_url;
+                        vueObj.videoIndex = this.realIndex;
+                        vueObj.getDetail()
+                        return false
+                    }
+                }
+            },
+            goodsList: [],
+            goodsDetail: {}
+        },
+        mounted: function () {
+            this.getList();
+        },
+        methods: {
+            changVideoStatus: function () {
+                if (this.isStop) {
+                    this.isStop = false;
+                    document.getElementsByTagName('video')[0].play();
+                } else {
+                    this.isStop = true;
+                    document.getElementsByTagName('video')[0].pause();
+                }
+            },
+            getList: function () {
+                Http.post(
+                    Http.HOST + Http.API_URL.HOMEGOODSLIST,
+                    {page: 1, type: 10, sort: 0}
+                ).then((res) => {
+                    if (res.code === 0) {
+                        this.goodsList = res.data.goodsList
+                    } else {
+                    }
+
+                    this.getDetail();
+                }).catch((e) => {
+                })
+            },
+            getDetail: function () {
+                var that = this;
+                var goods = this.goodsList[this.videoIndex]
+                if (!goods.hasDetail) {
+                    Http.post(Http.HOST + Http.API_URL.TAOBAOGOODSITEM, {item_id: goods.origin_id}, true, true).then((response) => {
+                        that.$set(that.goodsList[that.videoIndex], 'oauth_url', response.data['oauth_url'])
+                        that.$set(that.goodsList[that.videoIndex], 'rid', response.data['rid'])
+                        that.$set(that.goodsList[that.videoIndex], 'tbk_pwd', response.data['tbk_pwd'])
+                        that.$set(that.goodsList[that.videoIndex], 'coupon_url', response.data['coupon_url'])
+                        that.$set(that.goodsList[that.videoIndex], 'small_images', response.data['small_images'])
+                        goods.hasDetail = true;
+                    })
+                }
+            }
+        }
+    })
+</script>
+</html>

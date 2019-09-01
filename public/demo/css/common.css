@@ -1,0 +1,196 @@
+html,body { 
+	font-size: calc(100vw / 7.5);
+    height: 100%;
+    overflow: hidden;
+	font-size:0.23rem
+}
+body{
+	 height: 100%;
+    overflow: auto;
+}
+/*字体相关*/
+
+.text-overflow_1-xzh {
+    /*单行超出省略*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-overflow_2-xzh {
+    /*第二行超出省略*/
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.text-overflow_3-xzh {
+    /*第三行超出省略*/
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+[v-cloak] {
+  opacity: 0 !important;
+}
+
+
+/*加载动画样式*/
+
+.loading-box-1 .container {
+    width: 30px;
+    height: 30px;
+    position: relative;
+}
+.loading-box-1 .container .shape-1{background-color: #1875e5;}
+.loading-box-1 .container .shape-2{background-color: #c5523f;}
+.loading-box-1 .container .shape-3{background-color: #499255;}
+.loading-box-1 .container .shape-4{background-color: #f2b736;}
+
+.google-animation-2 {
+    -webkit-animation: Animation2Container 1s ease infinite;
+    animation: Animation2Container 1s ease infinite
+}
+
+.google-animation-2 .shape {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute
+}
+
+.google-animation-2 .shape-1 {
+    left: 0;
+    -webkit-animation: Animation2Shape1 .5s ease infinite alternate;
+    animation: Animation2Shape1 .5s ease infinite alternate
+}
+
+.google-animation-2 .shape-2 {
+    right: 0;
+    -webkit-animation: Animation2Shape2 .5s ease infinite alternate;
+    animation: Animation2Shape2 .5s ease infinite alternate
+}
+
+.google-animation-2 .shape-3 {
+    bottom: 0;
+    -webkit-animation: Animation2Shape3 .5s ease infinite alternate;
+    animation: Animation2Shape3 .5s ease infinite alternate
+}
+
+.google-animation-2 .shape-4 {
+    right: 0;
+    bottom: 0;
+    -webkit-animation: Animation2Shape4 .5s ease infinite alternate;
+    animation: Animation2Shape4 .5s ease infinite alternate
+}
+
+@keyframes Animation2Container {
+    0% {
+        transform: rotate(0)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@-webkit-keyframes Animation2Container {
+    0% {
+        transform: rotate(0)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@-webkit-keyframes Animation2Shape1 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(20px, 20px);
+        transform: translate(20px, 20px)
+    }
+}
+
+@keyframes Animation2Shape1 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(20px, 20px);
+        transform: translate(20px, 20px)
+    }
+}
+
+@keyframes Animation2Shape2 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(-20px, 20px);
+        transform: translate(-20px, 20px)
+    }
+}
+
+@-webkit-keyframes Animation2Shape2 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(-20px, 20px);
+        transform: translate(-20px, 20px)
+    }
+}
+
+@keyframes Animation2Shape3 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(20px, -20px);
+        transform: translate(20px, -20px)
+    }
+}
+
+@-webkit-keyframes Animation2Shape3 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(20px, -20px);
+        transform: translate(20px, -20px)
+    }
+}
+
+@keyframes Animation2Shape4 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(-20px, -20px);
+        transform: translate(-20px, -20px)
+    }
+}
+
+@-webkit-keyframes Animation2Shape4 {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0)
+    }
+    100% {
+        -webkit-transform: translate(-20px, -20px);
+        transform: translate(-20px, -20px)
+    }
+}
