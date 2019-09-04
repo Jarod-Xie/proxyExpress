@@ -1,4 +1,5 @@
 const express = require('express');
+const opn = require('opn');
 const app = express();
 const ip = getIPAddress();  // 获取本机 ip
 
@@ -13,12 +14,14 @@ var options = {
     target: 'http://native.youquanyun.com', // target host
     changeOrigin: true,               // needed for virtual hosted sites
 };
-app.use(proxy(options))
+app.use('/api', proxy(options))
 /***************************** 开始启动反向代理 **********************************/
 
 /**************************** 开启服务监听 ******************************/
 app.listen('3000', function() {
-    console.log(`项目地址 http://${ip}:3000`);
+    let url = `http://${ip}:3000`; 
+    opn(url);
+    console.log(`项目地址 ${url}, 请在后面接上对应html的路径进行开发`);
 });
 
 

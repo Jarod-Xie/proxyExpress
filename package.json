@@ -12,5 +12,8 @@
   "dependencies": {
     "express": "^4.16.3",
     "http-proxy-middleware": "^0.18.0"
+  },
+  "devDependencies": {
+    "opn": "^6.0.0"
   }
 }
